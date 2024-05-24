@@ -1,9 +1,9 @@
 import { build } from 'esbuild';
 const config = {
-  entryPoints: ['./src/server.ts'],
+  entryPoints: ['./src/handler.ts'],
   bundle: true,
   platform: 'node',
-  outfile: 'build/main.cjs',
+  outfile: 'build/index.cjs',
   sourcemap: true,
   target: 'node21',
   loader: {
