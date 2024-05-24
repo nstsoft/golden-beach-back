@@ -64,6 +64,17 @@ export default [
           ],
         },
       ],
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/typedef': [
+        'error',
+        {
+          parameter: true,
+          arrowParameter: true,
+          // variableDeclaration: true,
+          memberVariableDeclaration: true,
+          // objectDestructuring: true,
+        },
+      ],
     },
   },
   ...compat.extends('prettier'),

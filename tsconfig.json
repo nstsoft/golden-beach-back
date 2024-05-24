@@ -1,24 +1,22 @@
 {
-  "extends": "@tsconfig/node21/tsconfig.json",
   "compilerOptions": {
     "esModuleInterop": true,
     "rootDir": "./",
-    "baseUrl": "src",
+    "baseUrl": "./src",
     "allowJs": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "module": "ES2022",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "strict": false,
+    "target": "ES2015",
     "paths": {
-      "@src/*": ["src/*"]
+      "@src/*": ["./src/*"],
+      "@controllers/*": ["./src/controllers/*"]
     }
   },
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node",
-    "require": ["tsconfig-paths/register"]
-  },
+  "files": ["./src/server.ts"],
+
   "include": ["src"],
-  "exclude": ["node_modules", "dist", ".prettierrc.js","./eslint.config.mjs"]
+  "exclude": ["node_modules", "dist", ".prettierrc.js", "./eslint.config.mjs"]
 }
