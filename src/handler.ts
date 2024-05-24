@@ -16,4 +16,4 @@ const handler: Handler = async function (event: APIGatewayEvent, context: Contex
   return setup(event, context, cb);
 };
 
-exports.handler = handler;
+export { handler };
