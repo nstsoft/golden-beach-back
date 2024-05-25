@@ -1,9 +1,9 @@
 import 'reflect-metadata';
-import 'dotenv/config';
 
-import { app } from './app';
+import { app } from 'app';
+import { PORT } from 'config';
 
-const PORT = process.env.PORT || 3000;
+// const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

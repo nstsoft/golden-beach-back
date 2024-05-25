@@ -28,4 +28,9 @@ export class UserDataSource implements IUserDataSource {
     const saved = await this.userRepository.save(user);
     return User.toDomain(saved);
   }
+
+  async findOne(criteris: Partial<User>) {
+    const user = await this.userRepository.findOneByOrFail(criteris);
+    return User.toDomain(user);
+  }
 }

@@ -1,3 +1,4 @@
+import bcryptjs from 'bcryptjs';
 import { IRawUser, IUser, UserRole } from 'interfaces';
 import { ObjectId } from 'typeorm';
 
@@ -23,6 +24,10 @@ export class User implements IUser {
 
   static toBatchDomain(users: IRawUser[]): IUser[] {
     return users.map((user) => User.toDomain(user));
+  }
+
+  comparePassword(password: string): Promise<boolean> {
+    return bcryptjs.compare(password, this.password);
   }
 
   toRaw(): IRawUser {

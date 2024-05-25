@@ -1,5 +1,6 @@
-import { IUserData, IUserService } from '../interfaces';
-import { BaseController, Controller, Get, Post } from '../utils';
+import { IUserData, IUserService } from 'interfaces';
+import { Login } from 'types';
+import { BaseController, Controller, Get, Post } from 'utils';
 
 @Controller('/user')
 export class UserController extends BaseController {
@@ -11,6 +12,11 @@ export class UserController extends BaseController {
   async get() {
     console.log('Hello World!');
     return 'body';
+  }
+
+  @Post('/login')
+  async login({ body }: { body: Login }) {
+    return this.userService.login(body);
   }
 
   @Post('/')

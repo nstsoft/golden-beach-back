@@ -57,7 +57,6 @@ export abstract class BaseController {
       const routeData = Reflect.getMetadata('route', prototype, methodName);
       if (routeData) {
         const { route, method, routeMiddlewares } = routeData;
-
         const handler = this[methodName].bind(this);
 
         this.router[method](`${routePrefix}${route}`, ...controllerMiddlewares, ...routeMiddlewares, handler);

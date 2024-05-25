@@ -1,4 +1,5 @@
 import bcryptjs from 'bcryptjs';
+import { BCRYPT_SALT } from 'config';
 import { UserRole } from 'interfaces';
 import { BeforeInsert, Column, Entity, ObjectId, ObjectIdColumn } from 'typeorm';
 
@@ -15,7 +16,7 @@ export class UserModel {
 
   @BeforeInsert()
   async hashPassword() {
-    this.password = await bcryptjs.hash(this.password, 10);
+    this.password = await bcryptjs.hash(this.password, BCRYPT_SALT);
   }
   @Column({ type: 'enum', enum: UserRole, default: UserRole.USER, array: false })
   role: UserRole;
