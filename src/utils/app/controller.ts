@@ -59,7 +59,18 @@ export abstract class BaseController {
         const { route, method, routeMiddlewares } = routeData;
         const handler = this[methodName].bind(this);
 
-        this.router[method](`${routePrefix}${route}`, ...controllerMiddlewares, ...routeMiddlewares, handler);
+        const methods = controllerMiddlewares
+          .concat(routeMiddlewares)
+          .map((middleware) => async (req: Request, res: Response, next: NextFunction) => {
+            try {
+              await middleware(req, res, next);
+              next();
+            } catch (error) {
+              next(error);
+            }
+          });
+
+        this.router[method](`${routePrefix}${route}`, ...methods, handler);
       }
     });
   }
