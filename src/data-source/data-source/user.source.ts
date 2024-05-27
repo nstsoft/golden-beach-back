@@ -1,11 +1,9 @@
 import { User } from 'entities';
-import { IRawUser, IUserData, IUserDataSource } from 'interfaces';
+import { IEventData, IRawUser, IUserData, IUserDataSource } from 'interfaces';
 import { ObjectId, Repository } from 'typeorm';
 
 import { UserModel } from '../models';
 import { MongoSource } from '../source';
-
-const userRepository = MongoSource.getRepository(UserModel);
 
 export class UserDataSource implements IUserDataSource {
   private userRepository: Repository<UserModel>;
@@ -15,7 +13,7 @@ export class UserDataSource implements IUserDataSource {
   }
 
   async findOneById(id: string) {
-    const data: IRawUser = await userRepository.findOneBy({ _id: new ObjectId(id) });
+    const data: IRawUser = await this.userRepository.findOneBy({ _id: new ObjectId(id) });
     return data && User.toDomain(data);
   }
 
@@ -32,5 +30,17 @@ export class UserDataSource implements IUserDataSource {
   async findOne(criteris: Partial<User>) {
     const user = await this.userRepository.findOneByOrFail(criteris);
     return User.toDomain(user);
+  }
+
+  async findAll(criteria: Partial<IEventData>) {
+    const [data, count] = await Promise.all([
+      this.userRepository.find({ where: criteria }),
+      this.userRepository.count({ where: criteria }),
+    ]);
+
+    return {
+      count,
+      data: User.toBatchDomain(data),
+    };
   }
 }

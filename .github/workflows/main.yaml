@@ -18,10 +18,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cashe: 'yarn'
+
+      - name: Install corepack
+        run: npm install -g corepack
 
       - name: Install yarn
-        run: npm install -g yarn
+        run: corepack prepare yarn@stable --activate
 
       - name: Install dependencies
         run: yarn install

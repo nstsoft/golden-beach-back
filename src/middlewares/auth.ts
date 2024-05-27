@@ -11,4 +11,6 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
   const user = verifyAccessToken(token);
   if (!user) return res.status(403).json({ message: 'Empty payload' });
   Object.assign(req, { user });
+
+  return next();
 };

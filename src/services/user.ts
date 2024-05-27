@@ -1,7 +1,7 @@
 import { User } from 'entities';
 import { generateAccessToken, generateRefreshToken } from 'helpers';
 import CreateHttpError from 'http-errors';
-import { IUserDataSource, IUserService } from 'interfaces';
+import { IRawUser, IUserDataSource, IUserService } from 'interfaces';
 import { Login } from 'types';
 
 export class UserService implements IUserService {
@@ -11,8 +11,7 @@ export class UserService implements IUserService {
     return this.userDataSource.findOneById(id);
   }
 
-  create(data: User): Promise<User> {
-    console.log('create', data);
+  create(data: IRawUser): Promise<User> {
     return this.userDataSource.create(data);
   }
 

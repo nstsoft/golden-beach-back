@@ -16,7 +16,6 @@ export class UserController extends BaseController {
 
   @Post('/login')
   async login({ body }: { body: Login }) {
-    throw new Error('Method not implemented.');
     return this.userService.login(body);
   }
 

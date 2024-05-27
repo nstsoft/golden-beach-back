@@ -7,15 +7,18 @@
   "scripts": {
     "build": "node ./esbuild.config.mjs",
     "dev": "nodemon --config ./nodemon.json",
-    "start:bundle": "node ./dist/bundle.cjs"
+    "start": "node ./build/index.cjs",
+    "emitPackage": "echo '{\"name\": \"beach\",\"version\": \"1.0.0\"}' > ./build/package.json"
   },
   "devDependencies": {
     "@types/aws-serverless-express": "^3.3.9",
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/http-errors": "^2.0.4",
     "@types/jsonwebtoken": "^9.0.6",
+    "@types/multer": "^1.4.11",
     "@types/node": "^20.12.11",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
@@ -35,6 +38,8 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.583.0",
+    "@aws-sdk/lib-storage": "^3.583.0",
     "@codegenie/serverless-express": "^4.14.1",
     "@mapbox/node-pre-gyp": "^1.0.11",
     "@tsconfig/node21": "^21.0.3",
@@ -43,12 +48,15 @@
     "aws-serverless-express": "^3.4.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "http-errors": "^2.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.6.1",
+    "multer": "^1.4.5-lts.1",
     "reflect-metadata": "^0.2.2",
+    "sharp": "^0.33.4",
     "tsconfig-paths": "^4.2.0",
     "typeorm": "^0.3.20"
   },
@@ -57,5 +65,6 @@
       "src"
     ],
     "ext": "ts"
-  }
+  },
+  "packageManager": "yarn@4.2.2+sha512.c44e283c54e02de9d1da8687025b030078c1b9648d2895a65aab8e64225bfb7becba87e1809fc0b4b6778bbd47a1e2ab6ac647de4c5e383a53a7c17db6c3ff4b"
 }

@@ -19,5 +19,6 @@ export interface IRawUser extends IUserData {
 export interface IUser extends IRawUser {
   toRaw(): IRawUser;
   toJSON(): IRawUser;
+  toJson(): IRawUser;
   comparePassword(password: string): Promise<boolean>;
 }

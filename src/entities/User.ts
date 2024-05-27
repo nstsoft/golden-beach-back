@@ -30,7 +30,7 @@ export class User implements IUser {
     return bcryptjs.compare(password, this.password);
   }
 
-  toRaw(): IRawUser {
+  toJson(): IRawUser {
     return {
       email: this.email,
       name: this.name,
@@ -40,13 +40,11 @@ export class User implements IUser {
     };
   }
 
-  toJSON(): IRawUser {
-    return {
-      email: this.email,
-      name: this.name,
-      password: '*****',
-      role: this.role,
-      _id: this._id,
-    };
+  toRaw() {
+    return this.toJson();
+  }
+
+  toJSON() {
+    return this.toJson();
   }
 }
