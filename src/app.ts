@@ -4,7 +4,7 @@ import cors from 'cors';
 import express, { Request, Response } from 'express';
 
 import { eventService, imageService, userService } from './constructors';
-import { EventController, UserController } from './controllers';
+import { EventController, ImageController, UserController } from './controllers';
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -12,8 +12,12 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use('/api/v1', new UserController(userService).route);
-app.use('/api/v1', new EventController(eventService, imageService).route);
+const apiRouter = express.Router();
+apiRouter.use(new ImageController(imageService).route);
+apiRouter.use(new UserController(userService).route);
+apiRouter.use(new EventController(eventService, imageService).route);
+
+app.use('/api/v1', apiRouter);
 
 app.get('/', (req: Request, res: Response) => {
   res.json('Pong');

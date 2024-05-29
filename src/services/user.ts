@@ -1,8 +1,7 @@
-import { User } from 'entities';
 import { generateAccessToken, generateRefreshToken } from 'helpers';
 import CreateHttpError from 'http-errors';
 import { IRawUser, IUserDataSource, IUserService } from 'interfaces';
-import { Login } from 'types';
+import { Login, UserType } from 'types';
 
 export class UserService implements IUserService {
   constructor(private userDataSource: IUserDataSource) {}
@@ -11,11 +10,11 @@ export class UserService implements IUserService {
     return this.userDataSource.findOneById(id);
   }
 
-  create(data: IRawUser): Promise<User> {
+  create(data: IRawUser) {
     return this.userDataSource.create(data);
   }
 
-  async login(data: Login): Promise<{ user: User; accessToken: string; refreshToken: string }> {
+  async login(data: Login) {
     const user = await this.userDataSource.findOne({ email: data.email });
 
     const isValid = await user.comparePassword(data.password);
@@ -25,5 +24,9 @@ export class UserService implements IUserService {
     const refreshToken = generateRefreshToken({ _id: user._id });
 
     return { user, accessToken, refreshToken };
+  }
+
+  findAll(criteria: Partial<UserType>) {
+    return this.userDataSource.findAll(criteria);
   }
 }

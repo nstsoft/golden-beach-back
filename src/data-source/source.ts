@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 
-import { EventModel, UserModel } from './models';
+import { EventModel, ImagesModel, UserModel } from './models';
 
 const url = process.env.MONGO_DB_URL.replace('{user}', process.env.DB_USERNAME)
   .replace('{password}', process.env.DB_PASSWORD)
@@ -13,5 +13,5 @@ export const MongoSource = new DataSource({
   type: 'mongodb',
   synchronize: true,
   logging: false,
-  entities: [UserModel, EventModel],
+  entities: [UserModel, EventModel, ImagesModel],
 });

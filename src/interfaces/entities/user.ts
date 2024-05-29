@@ -15,10 +15,3 @@ export interface IUserData {
 export interface IRawUser extends IUserData {
   _id?: ObjectId;
 }
-
-export interface IUser extends IRawUser {
-  toRaw(): IRawUser;
-  toJSON(): IRawUser;
-  toJson(): IRawUser;
-  comparePassword(password: string): Promise<boolean>;
-}

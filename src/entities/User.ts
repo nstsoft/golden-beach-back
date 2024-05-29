@@ -1,8 +1,10 @@
 import bcryptjs from 'bcryptjs';
-import { IRawUser, IUser, UserRole } from 'interfaces';
+import { IRawUser, UserRole } from 'interfaces';
 import { ObjectId } from 'typeorm';
 
-export class User implements IUser {
+import { Base } from './Base';
+
+export class User extends Base {
   email: string;
   name: string;
   password: string;
@@ -10,6 +12,7 @@ export class User implements IUser {
   _id?: ObjectId;
 
   constructor({ email, password, role, _id, name }: IRawUser) {
+    super();
     this.email = email;
     this.email = email;
     this.password = password;
@@ -18,33 +21,17 @@ export class User implements IUser {
     this.name = name;
   }
 
-  static toDomain(user: IRawUser): IUser {
-    return new User(user);
-  }
-
-  static toBatchDomain(users: IRawUser[]): IUser[] {
-    return users.map((user) => User.toDomain(user));
-  }
-
   comparePassword(password: string): Promise<boolean> {
     return bcryptjs.compare(password, this.password);
   }
 
-  toJson(): IRawUser {
-    return {
+  toJson() {
+    return JSON.stringify({
       email: this.email,
       name: this.name,
       password: '*****',
       role: this.role,
       _id: this._id,
-    };
-  }
-
-  toRaw() {
-    return this.toJson();
-  }
-
-  toJSON() {
-    return this.toJson();
+    });
   }
 }

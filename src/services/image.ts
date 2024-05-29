@@ -1,6 +1,6 @@
-import { IImageDataSource, IImageService } from 'interfaces';
+import { IImageData, IImageDataSource, IImageService } from 'interfaces';
 import sharp from 'sharp';
-import { File, Metadata } from 'types';
+import { File, ImageType, Metadata } from 'types';
 
 export class ImageService implements IImageService {
   constructor(private imageDataSource: IImageDataSource) {}
@@ -18,5 +18,17 @@ export class ImageService implements IImageService {
       mimetype: file.mimetype,
       originalname: `${isThumb ? 'thumb_' : ''}${file.originalname}`,
     };
+  }
+
+  findById(id: string) {
+    return this.imageDataSource.findOneById(id);
+  }
+
+  create(data: IImageData): Promise<ImageType> {
+    return this.imageDataSource.create(data);
+  }
+
+  findAll(criteria: Partial<ImageType>) {
+    return this.imageDataSource.findAll(criteria);
   }
 }

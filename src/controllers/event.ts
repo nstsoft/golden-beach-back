@@ -1,6 +1,6 @@
-import { IEventData, IEventService, IImageService } from 'interfaces';
+import { IEventService, IImageService } from 'interfaces';
 import multer from 'multer';
-import { File } from 'types';
+import { File, UploadEvent } from 'types';
 import { BaseController, Controller, Get, Post } from 'utils';
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -16,12 +16,11 @@ export class EventController extends BaseController {
 
   @Get('/')
   async get() {
-    console.log('Hello World!');
-    return 'body';
+    return this.eventService.findAll({});
   }
 
   @Post('/', [upload.single('file')])
-  async post({ body, file }: { file: File; body: IEventData }) {
+  async post({ body, file }: { file: File; body: UploadEvent }) {
     const thumbMetadata = this.imageService.getMetadata(file, true);
     const mainMetadata = this.imageService.getMetadata(file, false);
 
@@ -35,11 +34,7 @@ export class EventController extends BaseController {
       type: body.type,
     };
 
-    console.log(thumbMetadata, mainMetadata);
-
     const sharped = await this.imageService.sharpImage(file.buffer);
-
-    console.debug('---------------', sharped);
 
     const [post] = await Promise.all([
       this.eventService.create(data),

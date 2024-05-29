@@ -1,6 +1,6 @@
 import bcryptjs from 'bcryptjs';
 import { BCRYPT_SALT } from 'config';
-import { UserRole } from 'interfaces';
+import { IUserData, UserRole } from 'interfaces';
 import { BeforeInsert, Column, Entity, ObjectId, ObjectIdColumn } from 'typeorm';
 
 @Entity('user')
@@ -20,4 +20,11 @@ export class UserModel {
   }
   @Column({ type: 'enum', enum: UserRole, default: UserRole.USER, array: false })
   role: UserRole;
+
+  constructor(user?: IUserData) {
+    this.email = user?.email;
+    this.name = user?.name;
+    this.password = user?.password;
+    this.role = user?.role;
+  }
 }

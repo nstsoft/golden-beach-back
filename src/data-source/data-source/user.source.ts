@@ -1,6 +1,6 @@
 import { User } from 'entities';
 import { IEventData, IRawUser, IUserData, IUserDataSource } from 'interfaces';
-import { ObjectId, Repository } from 'typeorm';
+import { FindManyOptions, ObjectId, Repository } from 'typeorm';
 
 import { UserModel } from '../models';
 import { MongoSource } from '../source';
@@ -18,25 +18,19 @@ export class UserDataSource implements IUserDataSource {
   }
 
   async create(data: IUserData) {
-    const user = new UserModel();
-    user.email = data.email;
-    user.name = data.name;
-    user.password = data.password;
-    user.role = data.role;
+    const user = new UserModel(data);
     const saved = await this.userRepository.save(user);
     return User.toDomain(saved);
   }
 
-  async findOne(criteris: Partial<User>) {
-    const user = await this.userRepository.findOneByOrFail(criteris);
+  async findOne(criteria: Partial<User>) {
+    const user = await this.userRepository.findOneByOrFail(criteria);
     return User.toDomain(user);
   }
 
   async findAll(criteria: Partial<IEventData>) {
-    const [data, count] = await Promise.all([
-      this.userRepository.find({ where: criteria }),
-      this.userRepository.count({ where: criteria }),
-    ]);
+    const params: FindManyOptions<UserModel> = Object.keys(criteria).length ? { where: criteria } : {};
+    const [data, count] = await Promise.all([this.userRepository.find(params), this.userRepository.count(params)]);
 
     return {
       count,
