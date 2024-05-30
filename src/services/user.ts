@@ -29,4 +29,8 @@ export class UserService implements IUserService {
   findAll(criteria: Partial<UserType>) {
     return this.userDataSource.findAll(criteria);
   }
+
+  delete(id: string) {
+    return this.userDataSource.delete(id);
+  }
 }

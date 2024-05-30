@@ -1,6 +1,6 @@
-import { IEventService, IImageService } from 'interfaces';
+import { EventTypeEnum, IEventService, IImageService } from 'interfaces';
 import multer from 'multer';
-import { File, UploadEvent } from 'types';
+import { AppRequest, File, UploadEvent } from 'types';
 import { BaseController, Controller, Get, Post } from 'utils';
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -15,8 +15,8 @@ export class EventController extends BaseController {
   }
 
   @Get('/')
-  async get() {
-    return this.eventService.findAll({});
+  async get(req: AppRequest) {
+    return this.eventService.findAll({ type: req.query.type as EventTypeEnum }, req.pagination);
   }
 
   @Post('/', [upload.single('file')])

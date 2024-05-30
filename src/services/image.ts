@@ -1,6 +1,6 @@
 import { IImageData, IImageDataSource, IImageService } from 'interfaces';
 import sharp from 'sharp';
-import { File, ImageType, Metadata } from 'types';
+import { File, ImageType, Metadata, Pagination } from 'types';
 
 export class ImageService implements IImageService {
   constructor(private imageDataSource: IImageDataSource) {}
@@ -28,7 +28,11 @@ export class ImageService implements IImageService {
     return this.imageDataSource.create(data);
   }
 
-  findAll(criteria: Partial<ImageType>) {
-    return this.imageDataSource.findAll(criteria);
+  findAll(criteria: Partial<ImageType>, pagination?: Pagination) {
+    return this.imageDataSource.findAll(criteria, pagination ?? { skip: 0, limit: 100 });
+  }
+
+  delete(id: string) {
+    return this.imageDataSource.delete(id);
   }
 }

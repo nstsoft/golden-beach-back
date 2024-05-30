@@ -1,6 +1,6 @@
-import { IImageService } from 'interfaces';
+import { IImageService, ImageTypeEnum } from 'interfaces';
 import multer from 'multer';
-import { File, UploadImage } from 'types';
+import { AppRequest, File, UploadImage } from 'types';
 import { BaseController, Controller, Get, Post } from 'utils';
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -11,8 +11,8 @@ export class ImageController extends BaseController {
   }
 
   @Get('/')
-  async get() {
-    return this.imageService.findAll({});
+  async get(request: AppRequest) {
+    return this.imageService.findAll({ type: request.query.type as ImageTypeEnum }, request.pagination);
   }
 
   @Post('/', [upload.single('file')])

@@ -1,7 +1,7 @@
 import { ObjectId } from 'typeorm';
 
 export enum ImageTypeEnum {
-  beach = 'news',
+  beach = 'beach',
   restaurant = 'restaurant',
   club = 'club',
 }

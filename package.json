@@ -8,7 +8,10 @@
     "build": "node ./esbuild.config.mjs",
     "dev": "nodemon --config ./nodemon.json",
     "start": "node ./build/index.cjs",
-    "emitPackage": "echo '{\"name\": \"beach\",\"version\": \"1.0.0\"}' > ./build/package.json"
+    "migration:create": "node --loader ts-node/esm ./node_modules/.bin/typeorm migration:create",
+    "migration:generate": "node --loader ts-node/esm ./node_modules/.bin/typeorm migration:generate -d ./src/data-source.ts",
+    "migration:up": "node --loader ts-node/esm ./node_modules/.bin/typeorm migration:run -d ./src/data-source.ts",
+    "migration:down": "node --loader ts-node/esm ./node_modules/.bin/typeorm migration:revert -d ./src/data-source.ts"
   },
   "devDependencies": {
     "@types/aws-serverless-express": "^3.3.9",

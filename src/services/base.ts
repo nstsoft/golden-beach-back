@@ -1,7 +1,7 @@
 import { IEventDataSource, IEventService, IRawEvent } from 'interfaces';
 import { EventType, Pagination } from 'types';
 
-export class EventService implements IEventService {
+export class BaseService implements IEventService {
   constructor(private eventDataSource: IEventDataSource) {}
 
   findById(id: string) {
