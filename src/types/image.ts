@@ -6,4 +6,5 @@ export type ImageType = BaseEntity<IRawImage>;
 
 export type UploadImage = {
   type: ImageTypeEnum;
+  label: string;
 };

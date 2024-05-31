@@ -19,6 +19,11 @@ export class EventController extends BaseController {
     return this.eventService.findAll({ type: req.query.type as EventTypeEnum }, req.pagination);
   }
 
+  @Get('/:id')
+  async getOne(req: AppRequest) {
+    return this.eventService.findById(req.params.id);
+  }
+
   @Post('/', [upload.single('file')])
   async post({ body, file }: { file: File; body: UploadEvent }) {
     const thumbMetadata = this.imageService.getMetadata(file, true);

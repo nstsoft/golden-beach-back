@@ -8,6 +8,8 @@ export class MenuModel {
   @Column({ unique: true, type: 'text' })
   image: string;
   @Column({ unique: true, type: 'text' })
+  thumb: string;
+  @Column({ unique: true, type: 'text' })
   name: string;
   @Column({ unique: true, type: 'text' })
   price: string;
@@ -25,5 +27,6 @@ export class MenuModel {
     this.name = menu?.name;
     this.price = menu?.price;
     this.type = menu?.type;
+    this.thumb = menu?.thumb;
   }
 }

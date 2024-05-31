@@ -1,7 +1,9 @@
 import { Event, Image, Menu, User } from 'entities';
 import { IEventData, IImageData, IMenuData, IUserData } from 'interfaces';
-import { FindManyOptions, FindOptionsOrder, FindOptionsWhere, ObjectId, Repository } from 'typeorm';
+import { ObjectId } from 'mongodb';
+import { FindManyOptions, FindOptionsOrder, FindOptionsWhere, Repository } from 'typeorm';
 import { Pagination } from 'types';
+import { removeUndefinedProps } from 'utils';
 
 import { EventModel, ImagesModel, MenuModel, UserModel } from '../models';
 import { MongoSource } from '../source';
@@ -32,9 +34,11 @@ export class BaseDataSource<M extends Models, Domain extends Domains, Data exten
   }
 
   async findAll(criteria: Partial<Data>, pagination?: Pagination) {
-    const params: FindManyOptions<new (...data: unknown[]) => M> = Object.keys(criteria).length
+    let params: FindManyOptions<new (...data: unknown[]) => M> = Object.keys(criteria).length
       ? { where: criteria }
       : {};
+
+    params = removeUndefinedProps(params);
 
     const order: FindOptionsOrder<new (...data: unknown[]) => M> = { _id: 'DESC' };
 

@@ -2,6 +2,7 @@ import { ObjectId } from 'typeorm';
 
 export interface IMenuData {
   image: string;
+  thumb: string;
   name: string;
   price: string;
   labels: string[];

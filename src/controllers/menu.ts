@@ -22,9 +22,14 @@ export class MenuController extends BaseController {
   @Post('/', [upload.single('file')])
   async post({ body, file }: { file: File; body: UploadMenu }) {
     const mainMetadata = this.imageService.getMetadata(file, false);
+    const thumbMetadata = this.imageService.getMetadata(file, true);
 
     const [post] = await Promise.all([
-      this.menuService.create({ ...body, image: `menu/${mainMetadata.originalname}` }),
+      this.menuService.create({
+        ...body,
+        image: `menu/${mainMetadata.originalname}`,
+        thumb: `menu/thumbs/${thumbMetadata.originalname}`,
+      }),
       this.imageService.uploadImage(file.buffer, mainMetadata, 'menu'),
     ]);
 
