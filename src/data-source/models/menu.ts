@@ -5,28 +5,31 @@ import { Column, Entity, ObjectId, ObjectIdColumn } from 'typeorm';
 export class MenuModel {
   @ObjectIdColumn()
   _id: ObjectId;
-  @Column({ unique: true, type: 'text' })
+  @Column({ unique: false, type: 'text' })
   image: string;
-  @Column({ unique: true, type: 'text' })
+  @Column({ unique: false, type: 'text' })
   thumb: string;
-  @Column({ unique: true, type: 'text' })
+  @Column({ unique: false, type: 'text' })
   name: string;
-  @Column({ unique: true, type: 'text' })
+  @Column({ unique: false, type: 'text' })
   price: string;
-  @Column({ unique: true, type: 'text', array: true })
+  @Column({ unique: false, type: 'text', array: true })
   labels: string[];
-  @Column({ unique: true, type: 'text' })
-  description: string;
-  @Column({ unique: true, type: 'text' })
-  type: string;
+  @Column({ unique: false, type: 'text' })
+  descriptionEn: string;
+  @Column({ unique: false, type: 'text' })
+  descriptionIt: string;
+  @Column({ unique: false, type: 'text' })
+  category: string;
 
   constructor(menu?: IMenuData) {
-    this.description = menu?.description;
+    this.descriptionEn = menu?.descriptionEn;
+    this.descriptionIt = menu?.descriptionIt;
     this.image = menu?.image;
     this.labels = menu?.labels;
     this.name = menu?.name;
     this.price = menu?.price;
-    this.type = menu?.type;
+    this.category = menu?.category;
     this.thumb = menu?.thumb;
   }
 }

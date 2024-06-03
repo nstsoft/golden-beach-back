@@ -6,8 +6,9 @@ export interface IMenuData {
   name: string;
   price: string;
   labels: string[];
-  description: string;
-  type: string;
+  descriptionEn: string;
+  descriptionIt: string;
+  category: string;
 }
 
 export interface IRawMenu extends IMenuData {

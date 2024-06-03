@@ -9,8 +9,9 @@ export class Menu extends Base {
   name: string;
   price: string;
   labels: string[];
-  description: string;
-  type: string;
+  descriptionIt: string;
+  descriptionEn: string;
+  category: string;
   _id?: ObjectId;
 
   constructor(menuItem: IRawMenu) {
@@ -20,7 +21,8 @@ export class Menu extends Base {
     this.name = menuItem.name;
     this.price = menuItem.price;
     this.labels = menuItem.labels;
-    this.description = menuItem.description;
-    this.type = menuItem.type;
+    this.descriptionIt = menuItem.descriptionIt;
+    this.descriptionEn = menuItem.descriptionEn;
+    this.category = menuItem.category;
   }
 }

@@ -24,7 +24,7 @@ export class ImageController extends BaseController {
       const data = {
         image: `gallery/${mainMetadata.originalname}`,
         thumb: `gallery/thumbs/${thumbMetadata.originalname}`,
-        label: body.label,
+        album: body.album,
         type: body.type,
       };
       const [image] = await Promise.all([

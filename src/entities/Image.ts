@@ -7,15 +7,15 @@ export class Image extends Base {
   image: string;
   thumb: string;
   type: ImageTypeEnum;
-  label: string;
+  album: string;
   _id?: ObjectId;
 
-  constructor({ image, type, thumb, _id, label }: IRawImage) {
+  constructor({ image, type, thumb, _id, album }: IRawImage) {
     super();
     this.type = type;
     this.image = image;
     this.thumb = thumb;
-    this.label = label;
+    this.album = album;
     this._id = _id;
   }
 }

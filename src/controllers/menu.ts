@@ -1,6 +1,6 @@
 import { IImageService, IMenuService } from 'interfaces';
 import multer from 'multer';
-import { File, UploadMenu } from 'types';
+import { AppRequest, File, UploadMenu } from 'types';
 import { BaseController, Controller, Get, Post } from 'utils';
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -19,18 +19,27 @@ export class MenuController extends BaseController {
     return this.menuService.findAll({}, { skip: 0, limit: 10000 });
   }
 
+  @Get('/:id')
+  async getOne(req: AppRequest) {
+    return this.menuService.findById(req.params.id);
+  }
+
   @Post('/', [upload.single('file')])
   async post({ body, file }: { file: File; body: UploadMenu }) {
     const mainMetadata = this.imageService.getMetadata(file, false);
     const thumbMetadata = this.imageService.getMetadata(file, true);
 
+    const thumb = await this.imageService.sharpImage(file.buffer);
+
     const [post] = await Promise.all([
       this.menuService.create({
         ...body,
+        labels: body.labels.split(','),
         image: `menu/${mainMetadata.originalname}`,
         thumb: `menu/thumbs/${thumbMetadata.originalname}`,
       }),
       this.imageService.uploadImage(file.buffer, mainMetadata, 'menu'),
+      this.imageService.uploadImage(thumb, thumbMetadata, 'menu/thumbs'),
     ]);
 
     return post;

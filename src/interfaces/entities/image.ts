@@ -9,7 +9,7 @@ export enum ImageTypeEnum {
 export interface IImageData {
   image: string;
   thumb: string;
-  label: string;
+  album: string;
   type: ImageTypeEnum;
 }
 

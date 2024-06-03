@@ -7,7 +7,8 @@ export type MenuType = BaseEntity<IRawMenu>;
 export type UploadMenu = {
   name: string;
   price: string;
-  labels: string[];
-  description: string;
-  type: string;
+  labels: string;
+  descriptionEn: string;
+  descriptionIt: string;
+  category: string;
 };

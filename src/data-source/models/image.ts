@@ -10,7 +10,7 @@ export class ImagesModel {
   @Column({ unique: false, type: 'text' })
   thumb: string;
   @Column({ unique: false, type: 'text' })
-  label: string;
+  album: string;
   @Column({ type: 'enum', enum: ImageTypeEnum, default: ImageTypeEnum.beach, array: false })
   type: ImageTypeEnum;
 
@@ -18,6 +18,6 @@ export class ImagesModel {
     this.image = image?.image;
     this.thumb = image?.thumb;
     this.type = image?.type;
-    this.label = image?.label;
+    this.album = image?.album;
   }
 }
