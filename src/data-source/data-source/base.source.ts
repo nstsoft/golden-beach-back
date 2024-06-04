@@ -67,6 +67,8 @@ export class BaseDataSource<M extends Models, Domain extends Domains, Data exten
   }
 
   async updateOne(_id: string, data: Partial<Data>) {
-    return this.repository.update(_id, data as unknown as any);
+    const { _id: id, ...parsed } = new this.model(data).toPlain();
+
+    return this.repository.update(_id, parsed as unknown as any);
   }
 }

@@ -2,6 +2,7 @@ import bcryptjs from 'bcryptjs';
 import { BCRYPT_SALT } from 'config';
 import { IUserData, UserRole } from 'interfaces';
 import { BeforeInsert, Column, Entity, ObjectId, ObjectIdColumn } from 'typeorm';
+import { removeUndefinedProps } from 'utils';
 
 @Entity('user')
 export class UserModel {
@@ -26,5 +27,9 @@ export class UserModel {
     this.name = user?.name;
     this.password = user?.password;
     this.role = user?.role;
+  }
+
+  toPlain() {
+    return removeUndefinedProps(this);
   }
 }

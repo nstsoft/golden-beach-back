@@ -1,4 +1,4 @@
-import { ObjectId } from 'typeorm';
+import { type ObjectId } from 'typeorm';
 
 export enum ImageTypeEnum {
   beach = 'beach',
@@ -10,6 +10,7 @@ export interface IImageData {
   image: string;
   thumb: string;
   album: string;
+  event?: string;
   type: ImageTypeEnum;
 }
 

@@ -2750,6 +2750,7 @@ __metadata:
     aws-serverless-express: "npm:^3.4.0"
     bcrypt: "npm:^5.1.1"
     bcryptjs: "npm:^2.4.3"
+    class-transformer: "npm:^0.5.1"
     cors: "npm:^2.8.5"
     dotenv: "npm:^16.4.5"
     esbuild: "npm:^0.21.3"
@@ -3018,6 +3019,13 @@ __metadata:
   version: 2.0.0
   resolution: "chownr@npm:2.0.0"
   checksum: 10c0/594754e1303672171cc04e50f6c398ae16128eb134a88f801bf5354fd96f205320f23536a045d9abd8b51024a149696e51231565891d4efdab8846021ecf88e6
+  languageName: node
+  linkType: hard
+
+"class-transformer@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "class-transformer@npm:0.5.1"
+  checksum: 10c0/19809914e51c6db42c036166839906420bb60367df14e15f49c45c8c1231bf25ae661ebe94736ee29cc688b77101ef851a8acca299375cc52fc141b64acde18a
   languageName: node
   linkType: hard
 

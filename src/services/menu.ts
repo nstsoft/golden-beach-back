@@ -1,4 +1,4 @@
-import { IMenuDataSource, IMenuService, IRawMenu } from 'interfaces';
+import { IMenuData, IMenuDataSource, IMenuService, IRawMenu } from 'interfaces';
 import { Pagination } from 'types';
 
 export class MenuService implements IMenuService {
@@ -16,7 +16,11 @@ export class MenuService implements IMenuService {
     return this.menuDataSource.findAll(criteria, pagination ?? { skip: 0, limit: 20 });
   }
 
-  delete(id: string) {
+  delete(id: string | string[]) {
     return this.menuDataSource.delete(id);
+  }
+
+  updateOne(id: string, data: Partial<IMenuData>) {
+    return this.menuDataSource.updateOne(id, data);
   }
 }

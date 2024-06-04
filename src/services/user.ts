@@ -1,6 +1,6 @@
 import { generateAccessToken, generateRefreshToken } from 'helpers';
 import CreateHttpError from 'http-errors';
-import { IRawUser, IUserDataSource, IUserService } from 'interfaces';
+import { IRawUser, IUserData, IUserDataSource, IUserService } from 'interfaces';
 import { Login, UserType } from 'types';
 
 export class UserService implements IUserService {
@@ -30,7 +30,11 @@ export class UserService implements IUserService {
     return this.userDataSource.findAll(criteria);
   }
 
-  delete(id: string) {
+  delete(id: string | string[]) {
     return this.userDataSource.delete(id);
+  }
+
+  updateOne(id: string, data: Partial<IUserData>) {
+    return this.userDataSource.updateOne(id, data);
   }
 }

@@ -16,7 +16,13 @@ export class EventController extends BaseController {
 
   @Get('/')
   async get(req: AppRequest) {
-    return this.eventService.findAll({ type: req.query.type as EventTypeEnum }, req.pagination);
+    const criteria = {
+      type: req.query.type as EventTypeEnum,
+    };
+    if (req.query.date) {
+      Object.assign(criteria, { date: new Date(req.query.date as string) });
+    }
+    return this.eventService.findAll(criteria, req.pagination);
   }
 
   @Get('/:id')
@@ -26,10 +32,7 @@ export class EventController extends BaseController {
 
   @Delete('/:id')
   async delete(req: AppRequest) {
-    if (req.params.id === 'many') {
-      return this.eventService.delete(req.body.ids);
-    }
-    return this.eventService.delete(req.params.id);
+    return this.eventService.delete(req.params.id === 'many' ? req.body.ids : req.params.id);
   }
 
   @Post('/', [upload.single('file')])
@@ -47,11 +50,14 @@ export class EventController extends BaseController {
       type: body.type,
     };
 
-    const sharped = await this.imageService.sharpImage(file.buffer);
+    const [sharped, original] = await Promise.all([
+      this.imageService.sharpAndCropImage(file.buffer, { width: 200, height: 300, quality: 30 }),
+      this.imageService.sharpAndCropImage(file.buffer, { width: 565, height: 800 }),
+    ]);
 
     const [post] = await Promise.all([
       this.eventService.create(data),
-      this.imageService.uploadImage(file.buffer, mainMetadata, 'events'),
+      this.imageService.uploadImage(original, mainMetadata, 'events'),
       this.imageService.uploadImage(sharped, thumbMetadata, 'events/thumbs'),
     ]);
 
@@ -71,14 +77,18 @@ export class EventController extends BaseController {
     if (file) {
       const thumbMetadata = this.imageService.getMetadata(file, true);
       const mainMetadata = this.imageService.getMetadata(file, false);
-      const sharped = await this.imageService.sharpImage(file.buffer);
+
+      const [sharped, original] = await Promise.all([
+        this.imageService.sharpAndCropImage(file.buffer, { width: 200, height: 300, quality: 30 }),
+        this.imageService.sharpAndCropImage(file.buffer, { width: 565, height: 800 }),
+      ]);
 
       Object.assign(data, {
         image: `events/${mainMetadata.originalname}`,
         thumb: `events/thumbs/${thumbMetadata.originalname}`,
       });
       await Promise.all([
-        this.imageService.uploadImage(file.buffer, mainMetadata, 'events'),
+        this.imageService.uploadImage(original, mainMetadata, 'events'),
         this.imageService.uploadImage(sharped, thumbMetadata, 'events/thumbs'),
       ]);
     }
