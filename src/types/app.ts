@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { DeleteResult } from 'typeorm';
+import { DeleteResult, UpdateResult } from 'typeorm';
 export type Pagination = {
   skip: number;
   limit: number;
@@ -10,3 +10,4 @@ export type AppRequest = Request & {
 };
 
 export type Deleted = DeleteResult;
+export type Updated = UpdateResult;

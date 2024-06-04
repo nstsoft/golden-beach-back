@@ -1,4 +1,4 @@
-import { IEventDataSource, IEventService, IRawEvent } from 'interfaces';
+import { IEventData, IEventDataSource, IEventService, IRawEvent } from 'interfaces';
 import { EventType, Pagination } from 'types';
 
 export class EventService implements IEventService {
@@ -16,7 +16,11 @@ export class EventService implements IEventService {
     return this.eventDataSource.findAll(criteria, pagination ?? { skip: 0, limit: 20 });
   }
 
-  delete(id: string) {
+  delete(id: string | string[]) {
     return this.eventDataSource.delete(id);
+  }
+
+  updateOne(id: string, data: Partial<IEventData>) {
+    return this.eventDataSource.updateOne(id, data);
   }
 }

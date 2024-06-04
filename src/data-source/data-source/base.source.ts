@@ -29,8 +29,8 @@ export class BaseDataSource<M extends Models, Domain extends Domains, Data exten
     return this.domain.toDomain(saved);
   }
 
-  async delete(id: string) {
-    return this.repository.delete(new ObjectId(id));
+  async delete(id: string | string[]) {
+    return this.repository.delete(id);
   }
 
   async findAll(criteria: Partial<Data>, pagination?: Pagination) {
@@ -64,5 +64,9 @@ export class BaseDataSource<M extends Models, Domain extends Domains, Data exten
   async findOne(criteria: FindOptionsWhere<new (...args: unknown[]) => M>) {
     const event = await this.repository.findOneByOrFail(criteria);
     return this.domain.toDomain(event);
+  }
+
+  async updateOne(_id: string, data: Partial<Data>) {
+    return this.repository.update(_id, data as unknown as any);
   }
 }
