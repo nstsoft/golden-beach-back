@@ -1,6 +1,6 @@
+import { ObjectId } from 'mongodb';
+
 const isObjectId = (value: unknown) => {
-  // Assuming ObjectId is a function or a constructor
-  // You need to adjust this check based on how ObjectId is defined in your context
   return typeof value === 'object' && value !== null && value.constructor && value.constructor.name === 'ObjectId';
 };
 
@@ -27,6 +27,24 @@ export const removeUndefinedProps = (obj: object) => {
         ) {
           delete obj[key];
         }
+      }
+    }
+  }
+  return obj;
+};
+
+export const deepParseObjectId = (obj: object) => {
+  if (Array.isArray(obj)) {
+    // Process arrays
+    for (let i = 0; i < obj.length; i++) {
+      obj[i] = deepParseObjectId(obj[i]);
+    }
+  } else if (obj && typeof obj === 'object') {
+    for (const key in obj) {
+      if (ObjectId.isValid(obj[key])) {
+        obj[key] = ObjectId.createFromHexString(obj[key]);
+      } else if (typeof obj[key] === 'object') {
+        return deepParseObjectId(obj[key]);
       }
     }
   }

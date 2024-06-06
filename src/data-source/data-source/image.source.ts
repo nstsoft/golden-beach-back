@@ -3,6 +3,7 @@ import { Upload } from '@aws-sdk/lib-storage';
 import { AWS_ACCESS_KEY_ID, AWS_REGION, AWS_SECRET_ACCESS_KEY, IMAGES_BUCKET_NAME, NODE_ENV } from 'config';
 import { Image } from 'entities';
 import { IImageData, IImageDataSource } from 'interfaces';
+import { ObjectId } from 'typeorm';
 import { Metadata } from 'types';
 
 import { ImagesModel } from '../models';
@@ -38,5 +39,15 @@ export class ImageDataSource extends BaseDataSource<ImagesModel, Image, IImageDa
     });
 
     return upload.done();
+  }
+
+  async getAlbums() {
+    return this.repository
+      .aggregate([
+        {
+          $group: { _id: '$album', image: { $first: '$$ROOT' }, count: { $sum: 1 } },
+        },
+      ])
+      .toArray() as unknown as Promise<{ _id: ObjectId; image: IImageData }[]>;
   }
 }

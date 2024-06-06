@@ -12,7 +12,19 @@ export class ImageController extends BaseController {
 
   @Get('/')
   async get(request: AppRequest) {
-    return this.imageService.findAll({ type: request.query.type as ImageTypeEnum }, request.pagination);
+    return this.imageService.findAll(
+      {
+        type: request.query.type as ImageTypeEnum,
+        event: request.query.event as string,
+        album: request.query.album as string,
+      },
+      request.pagination,
+    );
+  }
+
+  @Get('/albums')
+  async getGroups() {
+    return this.imageService.getAlbums();
   }
 
   @Post('/', [upload.array('files', 5)])

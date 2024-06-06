@@ -13,7 +13,7 @@ export class Event extends Base {
   type: EventTypeEnum;
   _id?: ObjectId;
 
-  constructor({ image, date, name, descriptionEng, descriptionIt, type, thumb }: IRawEvent) {
+  constructor({ image, date, name, descriptionEng, descriptionIt, type, thumb, _id }: IRawEvent) {
     super();
     this.type = type;
     this.image = image;
@@ -22,5 +22,6 @@ export class Event extends Base {
     this.descriptionEng = descriptionEng;
     this.descriptionIt = descriptionIt;
     this.thumb = thumb;
+    this._id = _id;
   }
 }

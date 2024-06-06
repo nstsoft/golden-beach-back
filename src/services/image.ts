@@ -51,4 +51,8 @@ export class ImageService implements IImageService {
   updateOne(id: string, data: Partial<IImageData>) {
     return this.imageDataSource.updateOne(id, data);
   }
+
+  getAlbums() {
+    return this.imageDataSource.getAlbums();
+  }
 }

@@ -1,4 +1,5 @@
 import { IImageData } from 'interfaces/entities';
+import { ObjectId } from 'typeorm';
 import { File, ImageType, Metadata } from 'types';
 
 import { IService } from './common';
@@ -12,4 +13,5 @@ export interface IImageService extends IService<ImageType, IImageData> {
   uploadImage(file: Buffer, metadata: Metadata, folder?: string): Promise<unknown>;
   getMetadata(file: File, isThumb?: boolean): Metadata;
   getMetadata(file: File, isThumb?: boolean): Metadata;
+  getAlbums(): Promise<{ _id: ObjectId; count: number; image: IImageData }[]>;
 }

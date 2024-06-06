@@ -1,9 +1,9 @@
 import { Event, Image, Menu, User } from 'entities';
 import { IEventData, IImageData, IMenuData, IUserData } from 'interfaces';
 import { ObjectId } from 'mongodb';
-import { FindManyOptions, FindOptionsOrder, FindOptionsWhere, Repository } from 'typeorm';
+import { FindManyOptions, FindOptionsOrder, FindOptionsWhere, MongoRepository } from 'typeorm';
 import { Pagination } from 'types';
-import { removeUndefinedProps } from 'utils';
+import { deepParseObjectId, removeUndefinedProps } from 'utils';
 
 import { EventModel, ImagesModel, MenuModel, UserModel } from '../models';
 import { MongoSource } from '../source';
@@ -13,12 +13,12 @@ type Domains = User | Image | Event | Menu;
 type Models = EventModel | UserModel | ImagesModel | MenuModel;
 
 export class BaseDataSource<M extends Models, Domain extends Domains, Data extends EntityData> {
-  repository: Repository<M>;
+  repository: MongoRepository<M>;
   domain: { toDomain: (model: M) => Domain; toBatchDomain: (model: M[]) => Domain[] };
   model: new (...args: unknown[]) => M;
 
   constructor(model: new (...args: unknown[]) => M, domain: new (...args: unknown[]) => Domain) {
-    this.repository = MongoSource.getRepository(model);
+    this.repository = MongoSource.getMongoRepository(model);
     this.domain = domain as unknown as { toDomain: (model: M) => Domain; toBatchDomain: (model: M[]) => Domain[] };
     this.model = model;
   }
@@ -34,11 +34,9 @@ export class BaseDataSource<M extends Models, Domain extends Domains, Data exten
   }
 
   async findAll(criteria: Partial<Data>, pagination?: Pagination) {
-    let params: FindManyOptions<new (...data: unknown[]) => M> = Object.keys(criteria).length
-      ? { where: criteria }
-      : {};
+    const plain = deepParseObjectId(removeUndefinedProps(criteria));
 
-    params = removeUndefinedProps(params);
+    const params: FindManyOptions<new (...data: unknown[]) => M> = Object.keys(plain).length ? { where: plain } : {};
 
     const order: FindOptionsOrder<new (...data: unknown[]) => M> = { _id: 'DESC' };
 
@@ -69,6 +67,6 @@ export class BaseDataSource<M extends Models, Domain extends Domains, Data exten
   async updateOne(_id: string, data: Partial<Data>) {
     const { _id: id, ...parsed } = new this.model(data).toPlain();
 
-    return this.repository.update(_id, parsed as unknown as any);
+    return this.repository.update(_id, parsed);
   }
 }
