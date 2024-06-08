@@ -1,6 +1,6 @@
 import { IImageData, IImageDataSource, IImageService } from 'interfaces';
 import sharp from 'sharp';
-import { File, ImageType, Metadata, Pagination } from 'types';
+import { type AlbumsQuery, File, ImageType, Metadata, Pagination } from 'types';
 
 export class ImageService implements IImageService {
   constructor(private imageDataSource: IImageDataSource) {}
@@ -52,7 +52,7 @@ export class ImageService implements IImageService {
     return this.imageDataSource.updateOne(id, data);
   }
 
-  getAlbums() {
-    return this.imageDataSource.getAlbums();
+  getAlbums(query: AlbumsQuery) {
+    return this.imageDataSource.getAlbums(query);
   }
 }

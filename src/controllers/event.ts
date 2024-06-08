@@ -18,10 +18,12 @@ export class EventController extends BaseController {
   async get(req: AppRequest) {
     const criteria = {
       type: req.query.type as EventTypeEnum,
+      name: req.query.name as string,
     };
     if (req.query.date) {
       Object.assign(criteria, { date: new Date(req.query.date as string) });
     }
+
     return this.eventService.findAll(criteria, req.pagination);
   }
 
@@ -52,7 +54,7 @@ export class EventController extends BaseController {
 
     const [sharped, original] = await Promise.all([
       this.imageService.sharpAndCropImage(file.buffer, { width: 200, height: 300, quality: 30 }),
-      this.imageService.sharpAndCropImage(file.buffer, { width: 565, height: 800 }),
+      this.imageService.sharpAndCropImage(file.buffer, { width: 600, height: 900 }),
     ]);
 
     const [post] = await Promise.all([

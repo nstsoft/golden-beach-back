@@ -1,6 +1,6 @@
 import { IImageService, ImageTypeEnum } from 'interfaces';
 import multer from 'multer';
-import { AppRequest, File, UploadImage } from 'types';
+import { type AlbumsQuery, AppRequest, File, UploadImage } from 'types';
 import { BaseController, Controller, Delete, Get, Post, Put } from 'utils';
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -23,8 +23,8 @@ export class ImageController extends BaseController {
   }
 
   @Get('/albums')
-  async getGroups() {
-    return this.imageService.getAlbums();
+  async getGroups({ query }: { query: AlbumsQuery }) {
+    return this.imageService.getAlbums(query);
   }
 
   @Post('/', [upload.array('files', 5)])

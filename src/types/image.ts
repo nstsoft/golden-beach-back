@@ -9,3 +9,8 @@ export type UploadImage = {
   album: string;
   event?: string;
 };
+
+export type AlbumsQuery = {
+  name?: string;
+  type?: ImageTypeEnum | null;
+};

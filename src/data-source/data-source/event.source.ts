@@ -11,6 +11,9 @@ export class EventDataSource extends BaseDataSource<EventModel, Event, IEventDat
   private eventRepository: Repository<EventModel>;
 
   async findAll(criteria: Partial<IEventData>, pagination?: Pagination) {
+    if (criteria.name) {
+      Object.assign(criteria, { name: { $regex: criteria.name, $options: 'i' } });
+    }
     let params: FindManyOptions<new (...data: unknown[]) => EventModel> = Object.keys(criteria).length
       ? { where: criteria }
       : {};

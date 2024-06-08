@@ -4,7 +4,7 @@ import { AWS_ACCESS_KEY_ID, AWS_REGION, AWS_SECRET_ACCESS_KEY, IMAGES_BUCKET_NAM
 import { Image } from 'entities';
 import { IImageData, IImageDataSource } from 'interfaces';
 import { ObjectId } from 'typeorm';
-import { Metadata } from 'types';
+import { type AlbumsQuery, Metadata } from 'types';
 
 import { ImagesModel } from '../models';
 import { BaseDataSource } from './base.source';
@@ -41,13 +41,22 @@ export class ImageDataSource extends BaseDataSource<ImagesModel, Image, IImageDa
     return upload.done();
   }
 
-  async getAlbums() {
+  async getAlbums(query: AlbumsQuery) {
+    const $match = {};
+    if (query?.name) {
+      Object.assign($match, { album: { $regex: query.name, $options: 'i' } });
+    }
+    if (query?.type) {
+      Object.assign($match, { type: query.type });
+    }
+
     return this.repository
       .aggregate([
+        { $match },
         {
           $group: { _id: '$album', image: { $first: '$$ROOT' }, count: { $sum: 1 } },
         },
       ])
-      .toArray() as unknown as Promise<{ _id: ObjectId; image: IImageData }[]>;
+      .toArray() as unknown as Promise<{ _id: ObjectId; image: IImageData; count: number }[]>;
   }
 }
