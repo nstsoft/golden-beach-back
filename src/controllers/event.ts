@@ -52,9 +52,20 @@ export class EventController extends BaseController {
       type: body.type,
     };
 
+    const resolutions =
+      body.type === 'event'
+        ? [
+            { width: 200, height: 300, quality: 30 },
+            { width: 600, height: 900 },
+          ]
+        : [
+            { width: 300, height: 200, quality: 30 },
+            { width: 900, height: 600 },
+          ];
+
     const [sharped, original] = await Promise.all([
-      this.imageService.sharpAndCropImage(file.buffer, { width: 200, height: 300, quality: 30 }),
-      this.imageService.sharpAndCropImage(file.buffer, { width: 600, height: 900 }),
+      this.imageService.sharpAndCropImage(file.buffer, resolutions[0]),
+      this.imageService.sharpAndCropImage(file.buffer, resolutions[1]),
     ]);
 
     const [post] = await Promise.all([
@@ -76,19 +87,31 @@ export class EventController extends BaseController {
       type: body.type,
     };
 
+    const resolutions =
+      body.type === 'event'
+        ? [
+            { width: 200, height: 300, quality: 30 },
+            { width: 600, height: 900 },
+          ]
+        : [
+            { width: 300, height: 200, quality: 30 },
+            { width: 900, height: 600 },
+          ];
+
     if (file) {
       const thumbMetadata = this.imageService.getMetadata(file, true);
       const mainMetadata = this.imageService.getMetadata(file, false);
 
       const [sharped, original] = await Promise.all([
-        this.imageService.sharpAndCropImage(file.buffer, { width: 200, height: 300, quality: 30 }),
-        this.imageService.sharpAndCropImage(file.buffer, { width: 565, height: 800 }),
+        this.imageService.sharpAndCropImage(file.buffer, resolutions[0]),
+        this.imageService.sharpAndCropImage(file.buffer, resolutions[1]),
       ]);
 
       Object.assign(data, {
         image: `events/${mainMetadata.originalname}`,
         thumb: `events/thumbs/${thumbMetadata.originalname}`,
       });
+
       await Promise.all([
         this.imageService.uploadImage(original, mainMetadata, 'events'),
         this.imageService.uploadImage(sharped, thumbMetadata, 'events/thumbs'),
