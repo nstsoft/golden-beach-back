@@ -9,6 +9,7 @@ export interface IMenuData {
   descriptionEn: string;
   descriptionIt: string;
   category: string;
+  images: { thumb: string; image: string }[];
 }
 
 export interface IRawMenu extends IMenuData {

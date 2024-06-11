@@ -1,4 +1,5 @@
 import { EventTypeEnum, IEventService, IImageService } from 'interfaces';
+import { isValidPassphrase } from 'middlewares';
 import multer from 'multer';
 import { AppRequest, File, UploadEvent } from 'types';
 import { BaseController, Controller, Delete, Get, Post, Put } from 'utils';
@@ -32,12 +33,12 @@ export class EventController extends BaseController {
     return this.eventService.findById(req.params.id);
   }
 
-  @Delete('/:id')
+  @Delete('/:id', [isValidPassphrase])
   async delete(req: AppRequest) {
     return this.eventService.delete(req.params.id === 'many' ? req.body.ids : req.params.id);
   }
 
-  @Post('/', [upload.single('file')])
+  @Post('/', [upload.single('file'), isValidPassphrase])
   async post({ body, file }: { file: File; body: UploadEvent }) {
     const thumbMetadata = this.imageService.getMetadata(file, true);
     const mainMetadata = this.imageService.getMetadata(file, false);
@@ -77,7 +78,7 @@ export class EventController extends BaseController {
     return post;
   }
 
-  @Put('/:id', [upload.single('file')])
+  @Put('/:id', [upload.single('file'), isValidPassphrase])
   async put({ body, file, params }: { file: File; body: UploadEvent; params: { id: string } }) {
     const data = {
       name: body.name,

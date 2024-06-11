@@ -3,6 +3,13 @@ import { IMenuData } from 'interfaces';
 import { BeforeInsert, BeforeUpdate, Column, Entity, ObjectId, ObjectIdColumn } from 'typeorm';
 import { removeUndefinedProps } from 'utils';
 
+class Image {
+  @Column({ unique: false, type: 'text' })
+  thumb: string;
+  @Column({ unique: false, type: 'text' })
+  image: string;
+}
+
 @Entity('menu')
 export class MenuModel {
   @Expose()
@@ -32,6 +39,9 @@ export class MenuModel {
   @Expose()
   @Column({ unique: false, type: 'text' })
   category: string;
+  @Expose()
+  @Column(() => Image, { array: true })
+  images: Image[];
 
   constructor(menu?: IMenuData) {
     this.descriptionEn = menu?.descriptionEn;
@@ -42,6 +52,7 @@ export class MenuModel {
     this.price = menu?.price;
     this.category = menu?.category;
     this.thumb = menu?.thumb;
+    this.images = menu?.images;
   }
 
   @BeforeInsert()

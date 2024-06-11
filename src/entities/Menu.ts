@@ -12,6 +12,7 @@ export class Menu extends Base {
   descriptionIt: string;
   descriptionEn: string;
   category: string;
+  images: { thumb: string; image: string }[];
   _id?: ObjectId;
 
   constructor(menuItem: IRawMenu) {
@@ -24,5 +25,6 @@ export class Menu extends Base {
     this.descriptionIt = menuItem.descriptionIt;
     this.descriptionEn = menuItem.descriptionEn;
     this.category = menuItem.category;
+    this.images = menuItem.images;
   }
 }
