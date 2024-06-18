@@ -1,7 +1,9 @@
 import { Expose, plainToInstance } from 'class-transformer';
 import { EventTypeEnum, IEventData } from 'interfaces';
+import moment from 'moment';
 import { BeforeInsert, BeforeUpdate, Column, Entity, ObjectId, ObjectIdColumn } from 'typeorm';
 import { removeUndefinedProps } from 'utils';
+
 @Entity('event')
 export class EventModel {
   @Expose()
@@ -30,13 +32,15 @@ export class EventModel {
   type: EventTypeEnum;
 
   constructor(event?: IEventData) {
-    this.date = event?.date;
     this.name = event?.name;
     this.descriptionIt = event?.descriptionIt;
     this.descriptionEng = event?.descriptionEng;
     this.image = event?.image;
     this.thumb = event?.thumb;
     this.type = event?.type;
+    if (event?.date) {
+      this.date = moment(event.date).utc().toDate();
+    }
   }
 
   @BeforeInsert()
